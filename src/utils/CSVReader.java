@@ -30,7 +30,7 @@ public class CSVReader {
             Maquina maquina = new Maquina(idMaquina, cantPiezas);
             maquinas.add(maquina);
         }
-        Collections.sort(maquinas);
+        Collections.sort(maquinas); //Ordeno la lista de máquinas
         return maquinas;
     }
 

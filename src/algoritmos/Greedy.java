@@ -5,6 +5,16 @@ import utils.CSVReader;
 
 import java.util.ArrayList;
 
+/*
+* Para la resolución con el algoritmo Greedy, se planteó una estrategia de selección de máquinas ordenadas de mayor a menor,
+* según la cantidad de piezas que puede producir cada máquina. Las máquinas ya vienen ordenadas desde el reader (se implementó Comparable en la clase Máquina).
+* En cada iteración se recorre la lista de máquinas y se selecciona la primera que su producción, sumada a las piezas acumuladas, no supere el total de piezas a fabricar.
+* En el caso que no se encuentre ninguna máquina que cumpla, se retorna null y se corta la busqueda indicando que no se encontró solución.
+* Si las piezas actuales son iguales a las piezas totales, se encontró una solución y se imprimen los resultados.
+* También se lleva un contador de candidatos, que aumenta cada vez que una máquina es considerada para ser agregada a la solución.
+* */
+
+
 public class Greedy {
     private int piezasTotales;
     private ArrayList<Maquina> maquinas;
