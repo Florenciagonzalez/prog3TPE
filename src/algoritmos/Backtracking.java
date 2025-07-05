@@ -7,7 +7,8 @@ import java.util.ArrayList;
 
 /*
 * Las máquinas ya vienen ordenadas desde el reader (se implementó Comparable en la clase Máquina).
-* Para la resolución con el algoritmo Backtracking, se lleva una solución parcial de secuencia y cantidad de piezas.
+* Para la resolución con el algoritmo Backtracking, se lleva una solución parcial de secuencia, cantidad de piezas y un índice para evitar reevaluar combinaciones ya consideradas,
+* para evitar generar estados innecesariamente.
 * Por cada máquina se verifica si la cantidad de piezas que produce más las acumuladas hasta el momento no supera el total de piezas a fabricar. Si es así,
 * si la secuencia final está vacía o la cantidad de máquinas de la secuencia parcial con la nueva máquina agregada es menor a la secuencia ya encontrada,
 * se agrega y continúa explorando recursivamente.
@@ -32,9 +33,8 @@ public class Backtracking {
         this.estados = 0;
     }
 
-
     public void backtracking(){
-        if (backtracking(new ArrayList<>(), 0)){
+        if (backtracking(new ArrayList<>(), 0,0)){
             System.out.println("El total de piezas producidas es de: " + piezasTotales);
             System.out.println("La secuencia de máquinas obtenidas es: " + secuencia);
             System.out.println("La cantidad de puestas en funcionamiento de las máquinas es de: " + secuencia.size());
@@ -44,19 +44,20 @@ public class Backtracking {
         }
     }
 
-    private boolean backtracking(ArrayList<String> secuenciaParcial, int piezasActuales){
+    private boolean backtracking(ArrayList<String> secuenciaParcial, int piezasActuales, int indiceInicio) {
         estados++;
-        if (piezasActuales == piezasTotales){
-            if (secuenciaParcial.size() < secuencia.size() || secuencia.isEmpty()){
+        if (piezasActuales == piezasTotales) {
+            if (secuenciaParcial.size() < secuencia.size() || secuencia.isEmpty()) {
                 secuencia.clear();
                 secuencia.addAll(secuenciaParcial);
             }
         } else {
-            for (Maquina m : maquinas){
-                if (piezasActuales + m.getCantPiezas() <= piezasTotales){
+            for (int i = indiceInicio; i < maquinas.size(); i++) {
+                Maquina m = maquinas.get(i);
+                if (piezasActuales + m.getCantPiezas() <= piezasTotales) {
                     if (secuenciaParcial.size() + 1 < secuencia.size() || secuencia.isEmpty()) {
                         secuenciaParcial.add(m.getIdMaquina());
-                        backtracking(secuenciaParcial, piezasActuales + m.getCantPiezas());
+                        backtracking(secuenciaParcial, piezasActuales + m.getCantPiezas(), i);
                         secuenciaParcial.remove(secuenciaParcial.size() - 1);
                     }
                 }
